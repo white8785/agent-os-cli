@@ -1,4 +1,4 @@
-<img width="1280" height="640" alt="agent-os-og" src="https://github.com/user-attachments/assets/e897628e-7063-4bab-a69a-7bb6d7ac8403" />
+<img width="1280" height="640" alt="agent-os-og" src="https://github.com/user-attachments/assets/f70671a2-66e8-4c80-8998-d4318af55d10" />
 
 ## Your system for spec-driven agentic development.
 
@@ -29,3 +29,4 @@ Created by Brian Casel, the creator of [Builder Methods](https://buildermethods.
 Get Brian's free resources on building with AI:
 - [Builder Briefing newsletter](https://buildermethods.com)
 - [YouTube](https://youtube.com/@briancasel)
+
