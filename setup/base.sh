@@ -112,7 +112,7 @@ if [ "$CLAUDE_CODE" = true ]; then
 
     # Download agents to base installation for project use
     echo "  📂 Agent templates:"
-    for agent in test-runner context-fetcher git-workflow file-creator date-checker; do
+    for agent in context-fetcher date-checker file-creator git-workflow project-manager test-runner; do
         download_file "${BASE_URL}/claude-code/agents/${agent}.md" \
             "$INSTALL_DIR/claude-code/agents/${agent}.md" \
             "false" \

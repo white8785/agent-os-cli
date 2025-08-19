@@ -197,7 +197,7 @@ if [ "$CLAUDE_CODE" = true ]; then
     if [ "$IS_FROM_BASE" = true ]; then
         # Copy from base installation
         echo "  📂 Commands:"
-        for cmd in plan-product create-spec execute-tasks analyze-product; do
+        for cmd in plan-product create-spec create-tasks execute-tasks analyze-product; do
             if [ -f "$BASE_AGENT_OS/commands/${cmd}.md" ]; then
                 copy_file "$BASE_AGENT_OS/commands/${cmd}.md" "./.claude/commands/${cmd}.md" "false" "commands/${cmd}.md"
             else
@@ -207,7 +207,7 @@ if [ "$CLAUDE_CODE" = true ]; then
 
         echo ""
         echo "  📂 Agents:"
-        for agent in test-runner context-fetcher git-workflow file-creator date-checker; do
+        for agent in context-fetcher date-checker file-creator git-workflow project-manager test-runner; do
             if [ -f "$BASE_AGENT_OS/claude-code/agents/${agent}.md" ]; then
                 copy_file "$BASE_AGENT_OS/claude-code/agents/${agent}.md" "./.claude/agents/${agent}.md" "false" "agents/${agent}.md"
             else
@@ -219,7 +219,7 @@ if [ "$CLAUDE_CODE" = true ]; then
         echo "  Downloading Claude Code files from GitHub..."
         echo ""
         echo "  📂 Commands:"
-        for cmd in plan-product create-spec execute-tasks analyze-product; do
+        for cmd in plan-product create-spec create-tasks execute-tasks analyze-product; do
             download_file "${BASE_URL}/commands/${cmd}.md" \
                 "./.claude/commands/${cmd}.md" \
                 "false" \
@@ -228,7 +228,7 @@ if [ "$CLAUDE_CODE" = true ]; then
 
         echo ""
         echo "  📂 Agents:"
-        for agent in test-runner context-fetcher git-workflow file-creator date-checker; do
+        for agent in context-fetcher date-checker file-creator git-workflow project-manager test-runner; do
             download_file "${BASE_URL}/claude-code/agents/${agent}.md" \
                 "./.claude/agents/${agent}.md" \
                 "false" \
@@ -247,7 +247,7 @@ if [ "$CURSOR" = true ]; then
 
     if [ "$IS_FROM_BASE" = true ]; then
         # Convert commands from base installation to Cursor rules
-        for cmd in plan-product create-spec execute-tasks analyze-product; do
+        for cmd in plan-product create-spec create-tasks execute-tasks analyze-product; do
             if [ -f "$BASE_AGENT_OS/commands/${cmd}.md" ]; then
                 convert_to_cursor_rule "$BASE_AGENT_OS/commands/${cmd}.md" "./.cursor/rules/${cmd}.mdc"
             else
@@ -257,7 +257,7 @@ if [ "$CURSOR" = true ]; then
     else
         # Download from GitHub and convert when using --no-base
         echo "  Downloading and converting from GitHub..."
-        for cmd in plan-product create-spec execute-tasks analyze-product; do
+        for cmd in plan-product create-spec create-tasks execute-tasks analyze-product; do
             TEMP_FILE="/tmp/${cmd}.md"
             curl -s -o "$TEMP_FILE" "${BASE_URL}/commands/${cmd}.md"
             if [ -f "$TEMP_FILE" ]; then
