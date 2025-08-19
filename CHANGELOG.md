@@ -5,6 +5,32 @@ All notable changes to Agent OS will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.1] - 2025-08-18
+
+### Replaced Decisions with Recaps
+
+Earlier versions added a decisions.md inside a project's .agent-os/product/.  In practice, this was rarely used and didn't help future development.
+
+It's been replaced with a new system for creating "Recaps"—short summaries of what was built—after every feature spec's implementation has been completed.  Similar to a changelog, but more descriptive and context-focused.  These recaps are easy to reference by both humans and AI agents.
+
+Recaps are automatically generated via the new complete-tasks.md process.
+
+### Added Project-Manager Subagent
+
+A goal of this update was to tighten up the processes for creating specs and executing tasks, ensuring these processes are executed reliably.  Sounds like the job for a "project manager".
+
+This update introduces a new subagent (for Claude Code) called project-manager which handles all task completion, status updates, and reporting progress back to you.
+
+### Spec Creation & Task Execution Reliability Improvements
+
+Several changes to the instructions, processes, and executions, all aimed at helping agents follow the process steps consistently.
+
+- Consolidated task execution instructions with clear step-by-step processes
+- Added post-flight verification rules to ensure instruction compliance
+- Improved subagent delegation tracking and reporting
+- Standardized test suite verification and git workflow integration
+- Enhanced task completion criteria validation and status management
+
 ## [1.4.0] - 2025-08-17
 
 BIG updates in this one!  Thanks for all the feedback, requests and support 🙏
@@ -235,6 +261,7 @@ Follow these steps to update a previous version to 1.4.0:
 - Task management with TDD workflow
 - Spec creation and organization system
 
+[1.4.1]: https://github.com/buildermethods/agent-os/compare/v1.4.0...v1.4.1
 [1.4.0]: https://github.com/buildermethods/agent-os/compare/v1.3.1...v1.4.0
 [1.3.1]: https://github.com/buildermethods/agent-os/compare/v1.3.0...v1.3.1
 [1.3.0]: https://github.com/buildermethods/agent-os/compare/v1.2.0...v1.3.0
