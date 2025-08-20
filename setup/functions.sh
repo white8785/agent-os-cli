@@ -124,7 +124,7 @@ install_from_github() {
 
     # Core instructions
     echo "  📂 Core instructions:"
-    for file in plan-product create-spec create-tasks execute-tasks execute-task analyze-product; do
+    for file in plan-product complete-tasks create-spec create-tasks execute-tasks execute-task analyze-product; do
         download_file "${BASE_URL}/instructions/core/${file}.md" \
             "$target_dir/instructions/core/${file}.md" \
             "$overwrite_inst" \
