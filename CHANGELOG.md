@@ -5,6 +5,17 @@ All notable changes to Agent OS will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.2] - 2025-08-24
+
+### Enforced full three-phase task execution
+
+- Updated `instructions/core/execute-tasks.md` to strictly require all three phases (pre-execution, execution loop, post-execution) and to invoke `instructions/core/post-execution-tasks.md` after task completion.
+
+### Post-execution process overhaul
+
+- Renamed `instructions/core/complete-tasks.md` to `instructions/core/post-execution-tasks.md`.
+- Improved the post-execution workflow by adding clarity and removing bloat in instructions.
+
 ## [1.4.1] - 2025-08-18
 
 ### Replaced Decisions with Recaps
@@ -262,6 +273,7 @@ Follow these steps to update a previous version to 1.4.0:
 - Spec creation and organization system
 
 [1.4.1]: https://github.com/buildermethods/agent-os/compare/v1.4.0...v1.4.1
+[1.4.2]: https://github.com/buildermethods/agent-os/compare/v1.4.1...v1.4.2
 [1.4.0]: https://github.com/buildermethods/agent-os/compare/v1.3.1...v1.4.0
 [1.3.1]: https://github.com/buildermethods/agent-os/compare/v1.3.0...v1.3.1
 [1.3.0]: https://github.com/buildermethods/agent-os/compare/v1.2.0...v1.3.0

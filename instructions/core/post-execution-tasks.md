@@ -10,7 +10,7 @@ encoding: UTF-8
 
 ## Overview
 
-After all tasks in the current spec have been completed, follow these steps to mark your progress updates, create a recap, and deliver the final report to the user.
+Follow these steps to mark your progress updates, create a recap, and deliver the final report to the user.
 
 <pre_flight_check>
   EXECUTE: @.agent-os/instructions/meta/pre-flight.md
@@ -89,40 +89,12 @@ Use the project-manager subagent to read the current spec's tasks.md file and ve
 
 <instructions>
   ACTION: Use project-manager subagent
-  REQUEST: "Verify task completion in current spec:
+  REQUEST: "Verify that all tasks have been marked with their outcome:
             - Read [SPEC_FOLDER_PATH]/tasks.md
-            - Check all tasks are marked complete with [x]
-            - Verify any incomplete tasks have documented blockers
-            - Mark completed tasks as [x] if verification confirms completion"
+            - Check all tasks are marked complete with [x] or (in rare cases) a documented blocking issue."
   WAIT: For task verification analysis
   PROCESS: Update task status as needed
 </instructions>
-
-<verification_process>
-  <read_tasks>
-    <file>[SPEC_FOLDER_PATH]/tasks.md</file>
-    <purpose>verify completion status</purpose>
-  </read_tasks>
-  <check_status>
-    <complete>tasks marked with [x]</complete>
-    <incomplete>tasks without [x] marking</incomplete>
-    <blockers>documented impediments</blockers>
-  </check_status>
-  <update_required>
-    <action>mark verified completed tasks with [x]</action>
-    <condition>when task is actually finished</condition>
-  </update_required>
-</verification_process>
-
-<completion_criteria>
-  <valid_states>
-    - Task marked complete [x]
-    - Task has documented blocker preventing completion
-  </valid_states>
-  <invalid_state>
-    - Task unmarked without blocker documentation
-  </invalid_state>
-</completion_criteria>
 
 </step>
 
@@ -156,7 +128,6 @@ Use the project-manager subagent to read @.agent-os/product/roadmap.md and mark 
       SKIP: If tasks clearly don't complete roadmap items
   EVALUATE: If current spec completes roadmap goals
   UPDATE: Mark roadmap items complete with [x] if applicable
-  VERIFY: Certainty before marking complete
 </instructions>
 
 </step>
