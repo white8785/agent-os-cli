@@ -13,7 +13,7 @@ from agentos.types import AgentType, InstallationError, InstallStatus
 
 def strip_ansi_codes(text: str) -> str:
     """Strip ANSI escape codes from text for consistent testing."""
-    return re.sub(r'\x1b\[[0-9;]*m', '', text)
+    return re.sub(r"\x1b\[[0-9;]*m", "", text)
 
 
 class TestCLI:
@@ -22,12 +22,12 @@ class TestCLI:
     def setup_method(self) -> None:
         """Set up test environment."""
         # Set environment variables to force consistent terminal output
-        os.environ['COLUMNS'] = '120'
-        os.environ['LINES'] = '40'
-        os.environ['TERM'] = 'xterm-256color'
+        os.environ["COLUMNS"] = "120"
+        os.environ["LINES"] = "40"
+        os.environ["TERM"] = "xterm-256color"
         # Disable Rich formatting for consistent test output
-        os.environ['NO_COLOR'] = '1'
-        os.environ['FORCE_COLOR'] = '0'
+        os.environ["NO_COLOR"] = "1"
+        os.environ["FORCE_COLOR"] = "0"
         self.runner = CliRunner()
 
     def test_cli_help(self) -> None:
@@ -147,12 +147,12 @@ class TestCLIIntegration:
     def setup_method(self) -> None:
         """Set up test environment."""
         # Set environment variables to force consistent terminal output
-        os.environ['COLUMNS'] = '120'
-        os.environ['LINES'] = '40'
-        os.environ['TERM'] = 'xterm-256color'
+        os.environ["COLUMNS"] = "120"
+        os.environ["LINES"] = "40"
+        os.environ["TERM"] = "xterm-256color"
         # Disable Rich formatting for consistent test output
-        os.environ['NO_COLOR'] = '1'
-        os.environ['FORCE_COLOR'] = '0'
+        os.environ["NO_COLOR"] = "1"
+        os.environ["FORCE_COLOR"] = "0"
         self.runner = CliRunner()
 
     def test_cli_version_consistency(self) -> None:
