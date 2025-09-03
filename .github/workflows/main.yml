@@ -82,7 +82,7 @@ jobs:
           path: dist/
 
   publish:
-    name: Publish to ${{ github.event_name == 'workflow_dispatch' && 'Test PyPI' || 'PyPI' }}
+    name: Publish Package
     needs: build
     runs-on: ubuntu-latest
     if: github.event_name == 'workflow_dispatch' || github.event_name == 'release'
