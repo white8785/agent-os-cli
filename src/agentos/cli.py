@@ -45,7 +45,7 @@ app = typer.Typer(
 )
 
 # Initialize Rich console for beautiful output
-console = Console()
+console = Console(force_terminal=True, width=120, legacy_windows=False)
 
 # Initialize core components
 config_manager = ConfigManager()
