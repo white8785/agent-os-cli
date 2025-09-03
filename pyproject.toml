@@ -64,7 +64,7 @@ lint = [
     "types-requests",
 ]
 dev = [
-    "agentos[test,lint]",
+    "agent-os-cli[test,lint]",
 ]
 
 [tool.hatch.build.targets.wheel]
