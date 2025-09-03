@@ -363,7 +363,7 @@ class TestConfigManager:
 
     def test_get_base_config_io_error(self) -> None:
         """Test base config with I/O error."""
-        if sys.platform.startswith("win"):
+        if sys.platform == "win32":
             # On Windows, simulate I/O error by mocking file operations
             with tempfile.TemporaryDirectory() as temp_dir:
                 config_path = Path(temp_dir) / ".agent-os" / "config.yml"

@@ -274,7 +274,7 @@ echo "Project installation completed"
                 # Verify that exists() was called for expected locations
                 assert mock_exists.call_count >= 8  # At least the main locations
 
-    @pytest.mark.skipif(sys.platform.startswith("win"), reason="Unix-style permissions not available on Windows")
+    @pytest.mark.skipif(sys.platform == "win32", reason="Unix-style permissions not available on Windows")
     def test_script_discovery_with_executable_checks(self) -> None:
         """Test script discovery properly validates executable permissions."""
         # Create non-executable script
@@ -400,7 +400,7 @@ echo "Project installation completed"
                 with pytest.raises(InstallationError, match="Unexpected error during script execution"):
                     self.executor.run_base_install()
 
-    @pytest.mark.skipif(sys.platform.startswith("win"), reason="Unix-style permissions not available on Windows")
+    @pytest.mark.skipif(sys.platform == "win32", reason="Unix-style permissions not available on Windows")
     def test_permission_and_executable_checks(self) -> None:
         """Test thorough permission and executable validation."""
         # Test various permission scenarios
@@ -588,7 +588,7 @@ class TestRealScriptExecution:
         not (Path(__file__).parent.parent / "setup" / "base.sh").exists(),
         reason="Real base.sh script not available",
     )
-    @pytest.mark.skipif(sys.platform.startswith("win"), reason="Bash scripts cannot execute directly on Windows")
+    @pytest.mark.skipif(sys.platform == "win32", reason="Bash scripts cannot execute directly on Windows")
     def test_real_base_script_help(self) -> None:
         """Test that real base.sh script responds to --help correctly."""
         base_script = Path(__file__).parent.parent / "setup" / "base.sh"
@@ -616,7 +616,7 @@ class TestRealScriptExecution:
         not (Path(__file__).parent.parent / "setup" / "project.sh").exists(),
         reason="Real project.sh script not available",
     )
-    @pytest.mark.skipif(sys.platform.startswith("win"), reason="Bash scripts cannot execute directly on Windows")
+    @pytest.mark.skipif(sys.platform == "win32", reason="Bash scripts cannot execute directly on Windows")
     def test_real_project_script_help(self) -> None:
         """Test that real project.sh script responds to --help correctly."""
         project_script = Path(__file__).parent.parent / "setup" / "project.sh"
