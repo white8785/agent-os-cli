@@ -81,7 +81,7 @@ testpaths = ["tests"]
 python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
-addopts = "--cov=agentos --cov-report=term-missing --cov-report=html --durations=10 -v"
+addopts = "--cov=agentos --cov-report=term-missing --cov-report=html --cov-report=xml --durations=10 -v"
 
 [tool.coverage.run]
 source = ["src/agentos"]
