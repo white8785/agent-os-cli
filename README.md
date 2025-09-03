@@ -1,5 +1,7 @@
 <img width="1280" height="640" alt="agent-os-og" src="https://github.com/user-attachments/assets/e897628e-7063-4bab-a69a-7bb6d7ac8403" />
 
+> **Note:** This is a community fork of [Agent OS](https://github.com/briancasel/agent-os) built on top of the excellent work by Brian Casel and the original project contributors. This fork is not officially associated with the main project.
+
 ## Your system for spec-driven agentic development.
 
 [Agent OS](https://buildermethods.com/agent-os) transforms AI coding agents from confused interns into productive developers. With structured workflows that capture your standards, your stack, and the unique details of your codebase, Agent OS gives your agents the specs they need to ship quality code on the first try—not the fifth.
