@@ -7,7 +7,7 @@ name = "agent-os-cli"
 version = "1.4.3"
 description = "Modern Python CLI for AgentOS - Streamlined AI-assisted development environment management"
 readme = "README.md"
-authors = [{ name = "Brian Casel", email = "brian@buildermethods.com" }]
+authors = [{ name = "JR White", email = "jrwhite8785@gmail.com" }]
 license = { text = "MIT" }
 keywords = [
     "ai", "development", "cli", "agents", "claude-code", 
@@ -39,11 +39,11 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/buildermethods/agent-os"
-Documentation = "https://github.com/buildermethods/agent-os#readme"
-Repository = "https://github.com/buildermethods/agent-os.git"
-Issues = "https://github.com/buildermethods/agent-os/issues"
-Discussions = "https://github.com/buildermethods/agent-os/discussions"
+Homepage = "https://github.com/white8785/agent-os-cli"
+Documentation = "https://github.com/white8785/agent-os-cli#readme"
+Repository = "https://github.com/white8785/agent-os-cli.git"
+Issues = "https://github.com/white8785/agent-os-cli/issues"
+Discussions = "https://github.com/white8785/agent-os-cli/discussions"
 
 [project.scripts]
 agentos = "agentos.cli:main"
