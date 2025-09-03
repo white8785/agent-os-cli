@@ -1,6 +1,7 @@
 """Tests for AgentOS configuration management."""
 
 import json
+import sys
 import tempfile
 from pathlib import Path
 from unittest.mock import Mock, patch
@@ -362,20 +363,36 @@ class TestConfigManager:
 
     def test_get_base_config_io_error(self) -> None:
         """Test base config with I/O error."""
-        with tempfile.TemporaryDirectory() as temp_dir:
-            config_path = Path(temp_dir) / ".agent-os" / "config.yml"
-            config_path.parent.mkdir(parents=True)
-            config_path.write_text("test: content")
+        if sys.platform.startswith("win"):
+            # On Windows, simulate I/O error by mocking file operations
+            with tempfile.TemporaryDirectory() as temp_dir:
+                config_path = Path(temp_dir) / ".agent-os" / "config.yml"
+                config_path.parent.mkdir(parents=True)
+                config_path.write_text("test: content")
 
-            # Make file unreadable
-            config_path.chmod(0o000)
+                with patch("pathlib.Path.home") as mock_home:
+                    mock_home.return_value = Path(temp_dir)
 
-            with patch("pathlib.Path.home") as mock_home:
-                mock_home.return_value = Path(temp_dir)
+                    # Mock the file open to raise PermissionError
+                    with patch("builtins.open", side_effect=PermissionError("Simulated I/O error")):
+                        with pytest.raises(ConfigurationError, match="Failed to read configuration file"):
+                            self.config_manager.get_base_config()
+        else:
+            # On Unix systems, use chmod to make file unreadable
+            with tempfile.TemporaryDirectory() as temp_dir:
+                config_path = Path(temp_dir) / ".agent-os" / "config.yml"
+                config_path.parent.mkdir(parents=True)
+                config_path.write_text("test: content")
 
-                try:
-                    with pytest.raises(ConfigurationError, match="Failed to read configuration file"):
-                        self.config_manager.get_base_config()
-                finally:
-                    # Restore permissions for cleanup
-                    config_path.chmod(0o644)
+                # Make file unreadable
+                config_path.chmod(0o000)
+
+                with patch("pathlib.Path.home") as mock_home:
+                    mock_home.return_value = Path(temp_dir)
+
+                    try:
+                        with pytest.raises(ConfigurationError, match="Failed to read configuration file"):
+                            self.config_manager.get_base_config()
+                    finally:
+                        # Restore permissions for cleanup
+                        config_path.chmod(0o644)

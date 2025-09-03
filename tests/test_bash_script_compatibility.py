@@ -588,6 +588,7 @@ class TestRealScriptExecution:
         not (Path(__file__).parent.parent / "setup" / "base.sh").exists(),
         reason="Real base.sh script not available",
     )
+    @pytest.mark.skipif(sys.platform.startswith("win"), reason="Bash scripts cannot execute directly on Windows")
     def test_real_base_script_help(self) -> None:
         """Test that real base.sh script responds to --help correctly."""
         base_script = Path(__file__).parent.parent / "setup" / "base.sh"
@@ -615,6 +616,7 @@ class TestRealScriptExecution:
         not (Path(__file__).parent.parent / "setup" / "project.sh").exists(),
         reason="Real project.sh script not available",
     )
+    @pytest.mark.skipif(sys.platform.startswith("win"), reason="Bash scripts cannot execute directly on Windows")
     def test_real_project_script_help(self) -> None:
         """Test that real project.sh script responds to --help correctly."""
         project_script = Path(__file__).parent.parent / "setup" / "project.sh"
