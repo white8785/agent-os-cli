@@ -364,7 +364,7 @@ class TestConfigManager:
     def test_get_base_config_io_error(self) -> None:
         """Test base config with I/O error."""
         if sys.platform == "win32":
-            # On Windows, simulate I/O error by mocking file operations
+            # On Windows, simulate I/O error by mocking Path.open directly
             with tempfile.TemporaryDirectory() as temp_dir:
                 config_path = Path(temp_dir) / ".agent-os" / "config.yml"
                 config_path.parent.mkdir(parents=True)
@@ -373,8 +373,8 @@ class TestConfigManager:
                 with patch("pathlib.Path.home") as mock_home:
                     mock_home.return_value = Path(temp_dir)
 
-                    # Mock the file open to raise PermissionError
-                    with patch("builtins.open", side_effect=PermissionError("Simulated I/O error")):
+                    # Mock Path.open to raise PermissionError
+                    with patch.object(Path, "open", side_effect=PermissionError("Simulated I/O error")):
                         with pytest.raises(ConfigurationError, match="Failed to read configuration file"):
                             self.config_manager.get_base_config()
         else:
