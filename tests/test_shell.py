@@ -265,7 +265,8 @@ class TestShellExecutor:
 
             # Verify command arguments
             call_args = mock_execute.call_args[0][0]
-            assert "/path/to/base.sh" in call_args
+            # Check for path components instead of exact path string to be cross-platform
+            assert any("base.sh" in str(arg) for arg in call_args)
             assert "--claude-code" in call_args
             assert "--cursor" not in call_args
             assert "--project-type" in call_args
@@ -323,7 +324,8 @@ class TestShellExecutor:
 
             # Verify command arguments
             call_args = mock_execute.call_args[0][0]
-            assert "/path/to/project.sh" in call_args
+            # Check for path components instead of exact path string to be cross-platform
+            assert any("project.sh" in str(arg) for arg in call_args)
             assert "--claude-code" not in call_args
             assert "--cursor" in call_args
             assert "--project-type=javascript" in call_args

@@ -22,6 +22,7 @@ Critical Implementation Details validated:
 import shutil
 import stat
 import subprocess
+import sys
 import tempfile
 from pathlib import Path
 from unittest.mock import Mock, patch
@@ -273,6 +274,7 @@ echo "Project installation completed"
                 # Verify that exists() was called for expected locations
                 assert mock_exists.call_count >= 8  # At least the main locations
 
+    @pytest.mark.skipif(sys.platform.startswith("win"), reason="Unix-style permissions not available on Windows")
     def test_script_discovery_with_executable_checks(self) -> None:
         """Test script discovery properly validates executable permissions."""
         # Create non-executable script
@@ -398,6 +400,7 @@ echo "Project installation completed"
                 with pytest.raises(InstallationError, match="Unexpected error during script execution"):
                     self.executor.run_base_install()
 
+    @pytest.mark.skipif(sys.platform.startswith("win"), reason="Unix-style permissions not available on Windows")
     def test_permission_and_executable_checks(self) -> None:
         """Test thorough permission and executable validation."""
         # Test various permission scenarios
