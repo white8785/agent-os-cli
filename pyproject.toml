@@ -1,0 +1,183 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "agent-os-cli"
+version = "1.4.3"
+description = "Modern Python CLI for AgentOS - Streamlined AI-assisted development environment management"
+readme = "README.md"
+authors = [{ name = "Brian Casel", email = "brian@buildermethods.com" }]
+license = { text = "MIT" }
+keywords = [
+    "ai", "development", "cli", "agents", "claude-code", 
+    "cursor", "automation", "devtools", "workflow"
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development",
+    "Topic :: System :: Installation/Setup",
+    "Topic :: Utilities",
+    "Typing :: Typed",
+]
+requires-python = ">=3.9"
+dependencies = [
+    "typer>=0.9.0",
+    "rich>=13.0.0",
+    "pydantic>=2.0.0",
+    "PyYAML>=6.0",
+    "requests>=2.28.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/buildermethods/agent-os"
+Documentation = "https://github.com/buildermethods/agent-os#readme"
+Repository = "https://github.com/buildermethods/agent-os.git"
+Issues = "https://github.com/buildermethods/agent-os/issues"
+Discussions = "https://github.com/buildermethods/agent-os/discussions"
+
+[project.scripts]
+agentos = "agentos.cli:main"
+
+[project.optional-dependencies]
+test = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "pytest-asyncio>=0.21.0",
+    "coverage[toml]>=7.0.0",
+]
+lint = [
+    "black>=23.0.0",
+    "mypy>=1.0.0",
+    "ruff>=0.1.0",
+    "pre-commit>=3.0.0",
+    "types-PyYAML",
+    "types-requests",
+]
+dev = [
+    "agent-os-cli[test,lint]",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/agentos"]
+
+[tool.black]
+target-version = ["py39"]
+line-length = 120
+preview = true
+skip-string-normalization = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "--cov=agentos --cov-report=term-missing --cov-report=html --durations=10 -v"
+
+[tool.coverage.run]
+source = ["src/agentos"]
+omit = ["*/tests/*", "*/__pycache__/*"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+]
+
+[tool.ruff]
+target-version = "py39"
+line-length = 120
+extend-exclude = ["temp/", "build/", "dist/"]
+
+[tool.ruff.lint]
+select = [
+    "A",    # flake8-builtins
+    "ARG",  # flake8-unused-arguments
+    "B",    # flake8-bugbear
+    "C",    # mccabe complexity
+    "E",    # pycodestyle errors
+    "F",    # pyflakes
+    "I",    # isort
+    "N",    # pep8-naming
+    "PLC",  # pylint conventions
+    "PLE",  # pylint errors
+    "PLR",  # pylint refactor
+    "PLW",  # pylint warnings
+    "Q",    # flake8-quotes
+    "RUF",  # ruff-specific
+    "S",    # flake8-bandit (security)
+    "T",    # flake8-debugger & print
+    "UP",   # pyupgrade
+    "W",    # pycodestyle warnings
+]
+ignore = [
+    "B027",    # Allow non-abstract empty methods in abstract base classes
+    "S105",    # Ignore checks for possible passwords
+    "S106",    # Ignore checks for possible passwords
+    "S107",    # Ignore checks for possible passwords
+    "C901",    # Ignore complexity
+    "PLR0911", # Too many return statements
+    "PLR0912", # Too many branches
+    "PLR0913", # Too many arguments
+    "PLR0915", # Too many statements
+    "T201",    # Allow prints in CLI
+    "S603",    # Allow subprocess for shell execution
+    "S607",    # Allow subprocess with partial executable path
+]
+unfixable = [
+    "F401",    # Don't touch unused imports
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["agentos"]
+combine-as-imports = true
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*" = ["PLR2004", "S101", "ARG", "S603"]
+"src/agentos/core/shell.py" = ["S603", "S607"]
+
+[tool.mypy]
+python_version = "3.9"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_any_unimported = false
+no_implicit_optional = true
+check_untyped_defs = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+show_error_codes = true
+strict_equality = true
+
+[[tool.mypy.overrides]]
+module = [
+    "rich.*",
+    "yaml.*",
+]
+ignore_missing_imports = true
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4.1",
+    "pytest-asyncio>=1.1.0",
+    "pytest-cov>=6.2.1",
+]

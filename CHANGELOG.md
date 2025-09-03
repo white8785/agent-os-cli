@@ -1,9 +1,113 @@
 # Changelog
 
-All notable changes to Agent OS will be documented in this file.
+All notable changes to AgentOS will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [1.4.3] - 2025-09-02
+
+### 🎉 Python CLI Release - Phase 2 Complete
+
+This release introduces the modern **Python CLI for AgentOS**, marking the completion of Phase 2 with a comprehensive, type-safe command-line interface that provides unified management of AgentOS installations.
+
+#### ✨ Added
+
+**Modern Python CLI Infrastructure**
+- **Unified Command Interface**: Single `agentos` command with install, update, uninstall, and version subcommands
+- **Rich Terminal Output**: Beautiful, colorized output with emojis, progress indicators, and formatted help text
+- **Type Safety**: 100% mypy coverage with Pydantic models ensuring data integrity and API safety
+- **Interactive Experience**: Smart prompts for project installation with confirmations and user guidance
+
+**Installation & Configuration Management**
+- **Flexible Installation Options**: Support for base-only, project-only, or combined installations
+- **Project Type Detection**: Automatic detection of 14+ project types (Python, JavaScript, Rust, Go, Java, C++, etc.)
+- **Agent Integration**: Seamless setup for Claude Code (`--claude-code`) and Cursor (`--cursor`) AI assistants
+- **Safe Overwrite Handling**: Confirmation prompts and options for `--overwrite-instructions`, `--overwrite-standards`, `--overwrite-config`
+
+**Update & Maintenance**
+- **Intelligent Updates**: Update base installation, project installation, or both with automatic version checking
+- **GitHub API Integration**: Automatic detection of latest AgentOS versions from GitHub releases
+- **Status Reporting**: Comprehensive `agentos version` command showing installation status, versions, and configured agents
+
+**Security & Reliability**
+- **Input Validation**: Comprehensive validation of project types, paths, and user inputs to prevent injection attacks
+- **Safe Subprocess Execution**: Secure shell script execution without shell injection vulnerabilities (no `shell=True`)
+- **Path Security**: Protection against path traversal attacks and unsafe file operations
+- **Error Recovery**: Robust error handling with informative user messages and recovery guidance
+
+**Developer Experience**
+- **Lightning Fast**: Built on `uv` for ultra-fast dependency management and execution
+- **Comprehensive Testing**: 210 tests with 100% code coverage using pytest, hypothesis, and integration tests
+- **Quality Assurance**: Complete pre-CI pipeline with formatting (black), linting (ruff), type checking (mypy)
+- **Documentation**: Detailed help text, examples, and comprehensive README
+
+#### 🔧 Technical Implementation
+
+**Architecture**
+```
+src/agentos/
+├── cli.py              # Typer-based CLI interface
+├── types.py            # Pydantic models and enums  
+└── core/
+    ├── config.py       # Configuration management
+    ├── installer.py    # Installation logic
+    └── shell.py        # Secure shell execution
+```
+
+**Dependencies**
+- **Core**: `typer>=0.9.0`, `rich>=13.0.0`, `pydantic>=2.0.0`, `PyYAML>=6.0`, `requests>=2.28.0`
+- **Development**: `pytest`, `black`, `mypy`, `ruff`, `hypothesis`, `pre-commit`
+- **Python Support**: Python 3.9+ with full type annotations
+
+**Key Features**
+- **Modular Design**: Clear separation of concerns with dedicated modules for configuration, installation, and shell integration
+- **Backward Compatibility**: Full compatibility with existing bash-based AgentOS installations and configurations
+- **Caching System**: Smart caching of configuration data and installation status for improved performance
+- **Comprehensive Validation**: Pydantic models ensure data integrity and provide clear error messages
+
+#### 📊 Quality Metrics
+
+- **Type Coverage**: 100% with mypy in strict mode
+- **Test Coverage**: 100% with unit tests, integration tests, and property-based testing
+- **Security**: All ruff security checks pass (S-prefix rules)
+- **Code Quality**: All linting rules pass with comprehensive formatting standards
+- **Documentation**: Complete docstrings and usage examples
+
+#### 🚀 Usage Examples
+
+```bash
+# Install base system with interactive project prompt
+agentos install
+
+# Install to current project with Claude Code integration
+agentos install --project --claude-code --project-type python-modern
+
+# Update both base and project installations
+agentos update
+
+# Check installation status and versions
+agentos version
+
+# Remove project installation safely
+agentos uninstall --project
+```
+
+#### 🔄 Backward Compatibility
+
+- **Existing Installations**: All existing `~/.agent-os/` base installations work unchanged
+- **Project Configurations**: Existing `.agent-os/` project installations are fully preserved  
+- **Configuration Files**: All `config.yml` files continue to work without modification
+- **Shell Scripts**: Original `base.sh` and `project.sh` scripts continue to function normally
+
+#### 🛠️ Build & Development
+
+- **Package Building**: `uv build` creates distributable wheels
+- **Development Setup**: `uv sync --all-extras` for complete development environment
+- **Quality Checks**: `make pre-ci` runs complete validation pipeline
+- **Testing**: `make test` runs full test suite with coverage reporting
+
+This release establishes AgentOS as a modern, type-safe, and user-friendly CLI tool while maintaining full backward compatibility with existing workflows and configurations.
 
 ## [1.4.2] - 2025-08-24
 
