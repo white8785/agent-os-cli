@@ -1,11 +1,15 @@
-name: Main
+name: Test Publish
 
 on:
-  push:
-    branches: [main]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to publish (leave empty to use current version from pyproject.toml)'
+        required: false
+        type: string
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   test:
@@ -33,7 +37,6 @@ jobs:
 
       - name: Run tests
         run: make test
-
 
   build:
     name: Build distribution
@@ -71,40 +74,10 @@ jobs:
           name: python-packages
           path: dist/
 
-  release:
-    name: Create GitHub Release
+  publish-test-pypi:
+    name: Publish to Test PyPI
     needs: build
     runs-on: ubuntu-latest
-    if: github.event_name == 'push'
-    
-    steps:
-      - uses: actions/checkout@v4
-      
-      - name: Extract version from pyproject.toml
-        id: version
-        run: |
-          VERSION=$(grep '^version = ' pyproject.toml | cut -d '"' -f 2)
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
-          echo "tag=v$VERSION" >> $GITHUB_OUTPUT
-      
-      - name: Create Release
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh release create ${{ steps.version.outputs.tag }} \
-            --title "Release ${{ steps.version.outputs.tag }}" \
-            --notes "Automated release for version ${{ steps.version.outputs.version }}
-
-          Changes in this release:
-          - Latest updates from main branch  
-          - All tests passing across Python 3.9-3.13 and Windows/macOS/Linux" \
-            --target main
-
-  publish-pypi:
-    name: Publish to PyPI
-    needs: [build, release]
-    runs-on: ubuntu-latest
-    if: github.event_name == 'push'
     
     steps:
       - name: Download distribution
@@ -113,8 +86,10 @@ jobs:
           name: python-packages
           path: dist/
       
-      - name: Publish to PyPI
+      - name: Publish to Test PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          password: ${{ secrets.PYPI_API_TOKEN }}
+          repository-url: https://test.pypi.org/legacy/
+          password: ${{ secrets.TEST_PYPI_API_TOKEN }}
+          skip-existing: true
           attestations: false
