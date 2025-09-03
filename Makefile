@@ -13,6 +13,7 @@ install: ## Install project dependencies with uv
 
 install-dev: ## Install all dependencies including dev tools
 	uv sync --all-extras
+	uv pip install -e .
 
 test: ## Run test suite with coverage
 	uv run --extra test pytest tests/ -v --cov=agentos --cov-report=term-missing --cov-report=html

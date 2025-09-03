@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "agentos"
+name = "agent-os-cli"
 version = "1.4.3"
 description = "Modern Python CLI for AgentOS - Streamlined AI-assisted development environment management"
 readme = "README.md"
