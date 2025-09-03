@@ -23,6 +23,7 @@ Example:
 
 from __future__ import annotations
 
+import os
 import sys
 
 import typer
@@ -46,11 +47,8 @@ app = typer.Typer(
 
 # Initialize Rich console for beautiful output
 # In test environments, disable terminal formatting to ensure consistent output
-import os
 console = Console(
-    force_terminal=not bool(os.getenv('CI') or os.getenv('PYTEST_CURRENT_TEST')),
-    width=120, 
-    legacy_windows=False
+    force_terminal=not bool(os.getenv("CI") or os.getenv("PYTEST_CURRENT_TEST")), width=120, legacy_windows=False
 )
 
 # Initialize core components
