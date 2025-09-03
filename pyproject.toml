@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "agent-os-cli"
-version = "1.4.6"
+version = "1.4.7"
 description = "Modern Python CLI for AgentOS - Streamlined AI-assisted development environment management"
 readme = "README.md"
 authors = [{ name = "JR White", email = "jrwhite8785@gmail.com" }]
