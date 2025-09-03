@@ -1,5 +1,7 @@
 """Tests for AgentOS CLI interface."""
 
+import os
+import re
 from unittest.mock import patch
 
 from typer.testing import CliRunner
@@ -9,11 +11,23 @@ from agentos.cli import app
 from agentos.types import AgentType, InstallationError, InstallStatus
 
 
+def strip_ansi_codes(text: str) -> str:
+    """Strip ANSI escape codes from text for consistent testing."""
+    return re.sub(r'\x1b\[[0-9;]*m', '', text)
+
+
 class TestCLI:
     """Test CLI command functionality."""
 
     def setup_method(self) -> None:
         """Set up test environment."""
+        # Set environment variables to force consistent terminal output
+        os.environ['COLUMNS'] = '120'
+        os.environ['LINES'] = '40'
+        os.environ['TERM'] = 'xterm-256color'
+        # Disable Rich formatting for consistent test output
+        os.environ['NO_COLOR'] = '1'
+        os.environ['FORCE_COLOR'] = '0'
         self.runner = CliRunner()
 
     def test_cli_help(self) -> None:
@@ -45,12 +59,13 @@ class TestCLI:
         """Test install command help."""
         result = self.runner.invoke(app, ["install", "--help"])
         assert result.exit_code == 0
-        assert "Install AgentOS base installation" in result.output
-        assert "--project" in result.output
-        assert "--claude-code" in result.output
-        assert "--cursor" in result.output
-        assert "--project-type" in result.output
-        assert "Examples:" in result.output
+        clean_output = strip_ansi_codes(result.output)
+        assert "Install AgentOS base installation" in clean_output
+        assert "--project" in clean_output
+        assert "--claude-code" in clean_output
+        assert "--cursor" in clean_output
+        assert "--project-type" in clean_output
+        assert "Examples:" in clean_output
 
     def test_install_command_basic(self) -> None:
         """Test basic install command with mocked installer."""
@@ -79,8 +94,9 @@ class TestCLI:
         """Test update command help."""
         result = self.runner.invoke(app, ["update", "--help"])
         assert result.exit_code == 0
-        assert "Update existing AgentOS installations" in result.output
-        assert "--project" in result.output
+        clean_output = strip_ansi_codes(result.output)
+        assert "Update existing AgentOS installations" in clean_output
+        assert "--project" in clean_output
 
     def test_update_command(self) -> None:
         """Test update command."""
@@ -100,8 +116,9 @@ class TestCLI:
         """Test uninstall command help."""
         result = self.runner.invoke(app, ["uninstall", "--help"])
         assert result.exit_code == 0
-        assert "Remove AgentOS installations" in result.output
-        assert "--project" in result.output
+        clean_output = strip_ansi_codes(result.output)
+        assert "Remove AgentOS installations" in clean_output
+        assert "--project" in clean_output
 
     def test_uninstall_command(self) -> None:
         """Test uninstall command."""
@@ -129,6 +146,13 @@ class TestCLIIntegration:
 
     def setup_method(self) -> None:
         """Set up test environment."""
+        # Set environment variables to force consistent terminal output
+        os.environ['COLUMNS'] = '120'
+        os.environ['LINES'] = '40'
+        os.environ['TERM'] = 'xterm-256color'
+        # Disable Rich formatting for consistent test output
+        os.environ['NO_COLOR'] = '1'
+        os.environ['FORCE_COLOR'] = '0'
         self.runner = CliRunner()
 
     def test_cli_version_consistency(self) -> None:
