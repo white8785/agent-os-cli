@@ -3,8 +3,6 @@ name: Main
 on:
   push:
     branches: [main]
-  release:
-    types: [published]
   workflow_dispatch:
     inputs:
       test_pypi:
@@ -14,7 +12,7 @@ on:
         default: true
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   test:
@@ -80,6 +78,35 @@ jobs:
           name: python-packages
           path: dist/
 
+  release:
+    name: Create GitHub Release
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Extract version from pyproject.toml
+        id: version
+        run: |
+          VERSION=$(grep '^version = ' pyproject.toml | cut -d '"' -f 2)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "tag=v$VERSION" >> $GITHUB_OUTPUT
+      
+      - name: Create Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create ${{ steps.version.outputs.tag }} \
+            --title "Release ${{ steps.version.outputs.tag }}" \
+            --notes "Automated release for version ${{ steps.version.outputs.version }}
+
+          Changes in this release:
+          - Latest updates from main branch  
+          - All tests passing across Python 3.9-3.13 and Windows/macOS/Linux" \
+            --target main
+
   publish-test-pypi:
     name: Publish to Test PyPI
     needs: build
@@ -103,9 +130,9 @@ jobs:
 
   publish-pypi:
     name: Publish to PyPI
-    needs: build
+    needs: [build, release]
     runs-on: ubuntu-latest
-    if: github.event_name == 'release'
+    if: github.event_name == 'push'
     
     steps:
       - name: Download distribution
