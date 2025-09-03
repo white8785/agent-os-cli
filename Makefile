@@ -12,8 +12,8 @@ install: ## Install project dependencies with uv
 	uv sync
 
 install-dev: ## Install all dependencies including dev tools
-	uv sync --all-extras
-	uv pip install -e .
+	uv sync --all-extras --reinstall-package agent-os-cli
+	uv pip install --force-reinstall -e .
 
 test: ## Run test suite with coverage
 	uv run --extra test pytest tests/ -v --cov=agentos --cov-report=term-missing --cov-report=html
