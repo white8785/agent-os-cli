@@ -8,10 +8,10 @@ on:
   workflow_dispatch:
     inputs:
       test_pypi:
-        description: 'Publish to Test PyPI instead of PyPI'
+        description: 'Publish to Test PyPI (manual trigger always uses Test PyPI)'
         required: false
         type: boolean
-        default: false
+        default: true
 
 permissions:
   contents: read
@@ -85,7 +85,7 @@ jobs:
     name: Publish to Test PyPI
     needs: build
     runs-on: ubuntu-latest
-    if: github.event_name == 'workflow_dispatch' && github.event.inputs.test_pypi == 'true'
+    if: github.event_name == 'workflow_dispatch'
     
     steps:
       - name: Download distribution
@@ -106,7 +106,7 @@ jobs:
     name: Publish to PyPI
     needs: build
     runs-on: ubuntu-latest
-    if: github.event_name == 'release' || (github.event_name == 'workflow_dispatch' && github.event.inputs.test_pypi != 'true')
+    if: github.event_name == 'release'
     
     steps:
       - name: Download distribution
