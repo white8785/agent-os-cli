@@ -88,3 +88,4 @@ jobs:
           repository-url: https://test.pypi.org/legacy/
           password: ${{ secrets.TEST_PYPI_API_TOKEN }}
           attestations: false
+          trusted-publishing: false
