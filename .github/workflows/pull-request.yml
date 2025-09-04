@@ -58,9 +58,9 @@ jobs:
         run: |
           BASE_VERSION=$(grep '^version = ' pyproject.toml | cut -d '"' -f 2)
           PR_NUMBER=${{ github.event.pull_request.number }}
-          COMMIT_SHA=$(echo ${{ github.sha }} | cut -c1-8)
-          # Use PEP 440 compliant pre-release format: 1.5.0a1.dev123+abc12345
-          PRE_VERSION="${BASE_VERSION}a${PR_NUMBER}.dev$(date +%s)+${COMMIT_SHA}"
+          # Use timestamp to ensure uniqueness (PyPI doesn't accept local versions)
+          # Format: 1.5.0a{PR}.dev{timestamp} (no +commit suffix)
+          PRE_VERSION="${BASE_VERSION}a${PR_NUMBER}.dev$(date +%s)"
           echo "pre_version=$PRE_VERSION" >> $GITHUB_OUTPUT
           echo "Generated pre-release version: $PRE_VERSION"
           
