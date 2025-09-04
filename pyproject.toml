@@ -5,8 +5,6 @@ build-backend = "uv_build"
 [tool.uv]
 package = true
 
-[tool.uv.build-backend]
-data = { data = "data" }
 
 [project]
 name = "agent-os-cli"
