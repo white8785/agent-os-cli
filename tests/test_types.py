@@ -6,7 +6,7 @@ from typing import Any
 import pytest
 from pydantic import ValidationError
 
-from agentos.types import (
+from agent_os_cli.types import (
     AgentConfig,
     AgentOSConfig,
     AgentOSError,

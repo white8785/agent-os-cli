@@ -14,7 +14,7 @@ full backward compatibility with existing AgentOS bash scripts.
 Example:
     Basic usage of the AgentOS CLI:
 
-    >>> from agentos import InstallOptions, InstallLocation, AgentType
+    >>> from agent_os_cli import InstallOptions, InstallLocation, AgentType
     >>> options = InstallOptions(
     ...     location=InstallLocation.PROJECT,
     ...     claude_code=True,

@@ -12,14 +12,16 @@ The ShellExecutor class handles:
 - Security-hardened command execution
 
 Example:
-    >>> from agentos.core.shell import ShellExecutor
+    >>> from agent_os_cli.core.shell import ShellExecutor
     >>> executor = ShellExecutor()
     >>> executor.run_base_install(claude_code=True)
 """
 
 from __future__ import annotations
 
+import site
 import subprocess
+import sys
 from pathlib import Path
 
 from rich.console import Console
@@ -212,19 +214,24 @@ class ShellExecutor:
             >>> if script_path:
             ...     print(f"Found script at: {script_path}")
         """
-        search_locations = [
-            # Bundled scripts in package
-            Path(__file__).parent.parent.parent.parent / "scripts" / script_name,
+        search_locations: list[Path] = [
+            # Development: scripts in source repository
             Path(__file__).parent.parent.parent.parent / "setup" / script_name,
+            # Installed: data files in site-packages share location
+            Path(sys.prefix) / "share" / "agent-os-cli" / "setup" / script_name,
             # User installation paths from settings
             *[path / script_name for path in PATHS.scripts_search_paths],
             # Current working directory (for development)
-            Path.cwd() / "scripts" / script_name,
             Path.cwd() / "setup" / script_name,
             # System locations
             Path("/usr/local/bin") / script_name,
             Path("/usr/bin") / script_name,
         ]
+
+        # Also check site-packages directly if available
+        site_packages = site.getsitepackages() if hasattr(site, "getsitepackages") else []
+        if site_packages:
+            search_locations.insert(2, Path(site_packages[0]) / "share" / "agent-os-cli" / "setup" / script_name)
 
         for location in search_locations:
             if location.exists() and location.is_file():
