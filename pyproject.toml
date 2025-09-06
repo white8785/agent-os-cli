@@ -1,13 +1,17 @@
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["uv_build >= 0.7.19, <0.9.0"]
+build-backend = "uv_build"
+
+[tool.uv]
+package = true
+
 
 [project]
 name = "agent-os-cli"
 version = "1.5.0"
 description = "Modern Python CLI for AgentOS - Streamlined AI-assisted development environment management"
 readme = "README.md"
-authors = [{ name = "JR White", email = "jrwhite8785@gmail.com" }]
+authors = [{ name = "white8785", email = "contact_me@white8785.com" }]
 license = { text = "MIT" }
 keywords = [
     "ai", "development", "cli", "agents", "claude-code", 
@@ -46,7 +50,7 @@ Issues = "https://github.com/white8785/agent-os-cli/issues"
 Discussions = "https://github.com/white8785/agent-os-cli/discussions"
 
 [project.scripts]
-agentos = "agentos.cli:main"
+agentos = "agent_os_cli.cli:main"
 
 [project.optional-dependencies]
 test = [
@@ -56,7 +60,6 @@ test = [
     "coverage[toml]>=7.0.0",
 ]
 lint = [
-    "black>=23.0.0",
     "mypy>=1.0.0",
     "ruff>=0.1.0",
     "pre-commit>=3.0.0",
@@ -67,24 +70,16 @@ dev = [
     "agent-os-cli[test,lint]",
 ]
 
-[tool.hatch.build.targets.wheel]
-packages = ["src/agentos"]
-
-[tool.black]
-target-version = ["py39"]
-line-length = 120
-preview = true
-skip-string-normalization = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
-addopts = "--cov=agentos --cov-report=term-missing --cov-report=html --cov-report=xml --durations=10 -v"
+addopts = "--cov=agent_os_cli --cov-report=term-missing --cov-report=html --cov-report=xml --durations=10 -v"
 
 [tool.coverage.run]
-source = ["src/agentos"]
+source = ["src/agent_os_cli"]
 omit = ["*/tests/*", "*/__pycache__/*"]
 
 [tool.coverage.report]
@@ -106,6 +101,11 @@ exclude_lines = [
 target-version = "py39"
 line-length = 120
 extend-exclude = ["temp/", "build/", "dist/"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
 
 [tool.ruff.lint]
 select = [
@@ -147,12 +147,12 @@ unfixable = [
 ]
 
 [tool.ruff.lint.isort]
-known-first-party = ["agentos"]
+known-first-party = ["agent_os_cli"]
 combine-as-imports = true
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**/*" = ["PLR2004", "S101", "ARG", "S603"]
-"src/agentos/core/shell.py" = ["S603", "S607"]
+"src/agent_os_cli/core/shell.py" = ["S603", "S607"]
 
 [tool.mypy]
 python_version = "3.9"

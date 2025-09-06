@@ -29,8 +29,8 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from agentos.core.shell import ShellExecutor
-from agentos.types import InstallationError
+from agent_os_cli.core.shell import ShellExecutor
+from agent_os_cli.types import InstallationError
 
 
 class TestBashScriptCompatibility:
@@ -420,9 +420,9 @@ echo "Project installation completed"
 
             # Check if script is considered executable
             is_executable = bool(script_path.stat().st_mode & 0o111)
-            assert (
-                is_executable == should_be_executable
-            ), f"Permission {permissions:o} should be executable: {should_be_executable}"
+            assert is_executable == should_be_executable, (
+                f"Permission {permissions:o} should be executable: {should_be_executable}"
+            )
 
     def test_no_base_fallback_scenario(self) -> None:
         """Test --no-base fallback scenario with direct GitHub download."""

@@ -14,7 +14,7 @@ All models use modern Python 3.10+ type annotations and provide
 comprehensive validation with detailed error messages.
 
 Example:
-    >>> from agentos.types import InstallOptions, InstallLocation
+    >>> from agent_os_cli.types import InstallOptions, InstallLocation
     >>> options = InstallOptions(
     ...     location=InstallLocation.BASE,
     ...     project_type="python-web"

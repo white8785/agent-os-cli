@@ -11,11 +11,11 @@ import requests
 import yaml
 from typer.testing import CliRunner
 
-from agentos.cli import app
-from agentos.core.config import ConfigManager
-from agentos.core.installer import Installer
-from agentos.core.shell import ShellExecutor
-from agentos.types import ConfigurationError, InstallationError
+from agent_os_cli.cli import app
+from agent_os_cli.core.config import ConfigManager
+from agent_os_cli.core.installer import Installer
+from agent_os_cli.core.shell import ShellExecutor
+from agent_os_cli.types import ConfigurationError, InstallationError
 
 
 class TestEndToEndInstallation:
@@ -36,7 +36,7 @@ class TestEndToEndInstallation:
 
     @patch("pathlib.Path.home")
     @patch("pathlib.Path.cwd")
-    @patch("agentos.core.shell.ShellExecutor._find_script")
+    @patch("agent_os_cli.core.shell.ShellExecutor._find_script")
     @patch("subprocess.run")
     def test_full_installation_workflow(self, mock_run, mock_find_script, mock_cwd, mock_home):
         """Test complete installation workflow from CLI to completion."""
@@ -67,7 +67,7 @@ version = "0.1.0"
         )
 
         # Run base installation via CLI
-        with patch("agentos.core.shell.Progress"):
+        with patch("agent_os_cli.core.shell.Progress"):
             result = self.runner.invoke(
                 app,
                 ["install", "--claude-code", "--cursor", "--project-type", "python"],
@@ -101,7 +101,7 @@ version = "0.1.0"
             yaml.dump(config_data, f)
 
         # Now install to project (with Progress mocked)
-        with patch("agentos.core.shell.Progress"):
+        with patch("agent_os_cli.core.shell.Progress"):
             result = self.runner.invoke(
                 app,
                 ["install", "--project", "--claude-code"],
@@ -146,9 +146,9 @@ version = "0.1.0"
         (project_path / "CLAUDE.md").write_text("# Old Instructions")
 
         with (
-            patch("agentos.core.installer.Installer.get_latest_version") as mock_version,
-            patch("agentos.core.shell.ShellExecutor.run_base_install"),
-            patch("agentos.core.shell.ShellExecutor.run_project_install"),
+            patch("agent_os_cli.core.installer.Installer.get_latest_version") as mock_version,
+            patch("agent_os_cli.core.shell.ShellExecutor.run_base_install"),
+            patch("agent_os_cli.core.shell.ShellExecutor.run_project_install"),
         ):
             mock_version.return_value = "1.4.3"
 
@@ -199,7 +199,7 @@ class TestErrorRecovery:
         """Set up test environment."""
         self.runner = CliRunner()
 
-    @patch("agentos.core.shell.ShellExecutor._find_script")
+    @patch("agent_os_cli.core.shell.ShellExecutor._find_script")
     def test_missing_script_error(self, mock_find_script):
         """Test handling of missing installation scripts."""
         mock_find_script.return_value = None
@@ -210,7 +210,7 @@ class TestErrorRecovery:
         assert "not found" in result.output.lower()
 
     @patch("subprocess.run")
-    @patch("agentos.core.shell.ShellExecutor._find_script")
+    @patch("agent_os_cli.core.shell.ShellExecutor._find_script")
     def test_script_execution_failure(self, mock_find_script, mock_run):
         """Test handling of script execution failures."""
         mock_find_script.return_value = Path("/usr/local/bin/base.sh")
@@ -345,7 +345,7 @@ class TestInteractivePrompts:
         """Set up test environment."""
         self.runner = CliRunner()
 
-    @patch("agentos.core.installer.Installer.install")
+    @patch("agent_os_cli.core.installer.Installer.install")
     def test_project_installation_prompt_yes(self, mock_install):
         """Test accepting project installation prompt."""
         self.runner.invoke(
@@ -357,7 +357,7 @@ class TestInteractivePrompts:
         # Should call install twice (base + project)
         assert mock_install.call_count >= 1
 
-    @patch("agentos.core.installer.Installer.install")
+    @patch("agent_os_cli.core.installer.Installer.install")
     def test_project_installation_prompt_no(self, mock_install):
         """Test declining project installation prompt."""
         self.runner.invoke(
@@ -398,8 +398,8 @@ class TestInteractivePrompts:
                 yaml.dump(config_data, f)
 
             with (
-                patch("agentos.core.shell.ShellExecutor.run_base_install"),
-                patch("agentos.core.shell.ShellExecutor._find_script") as mock_find,
+                patch("agent_os_cli.core.shell.ShellExecutor.run_base_install"),
+                patch("agent_os_cli.core.shell.ShellExecutor._find_script") as mock_find,
             ):
                 mock_find.return_value = Path("/usr/local/bin/base.sh")
 
@@ -447,7 +447,7 @@ class TestSecurityValidation:
             mock_result.stderr = ""
             mock_run.return_value = mock_result
 
-            with patch("agentos.core.shell.Progress"):
+            with patch("agent_os_cli.core.shell.Progress"):
                 shell_executor._execute_script(
                     ["/path/to/script.sh", "--test"],
                     "Testing",
