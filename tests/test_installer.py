@@ -252,7 +252,6 @@ class TestInstaller:
             location=InstallLocation.BASE,
             claude_code=True,
             project_type="python",
-            overwrite_config=True,
         )
 
         status = Mock()
@@ -268,7 +267,7 @@ class TestInstaller:
             project_type="python",
             overwrite_instructions=False,
             overwrite_standards=False,
-            overwrite_config=True,
+            overwrite_config=False,
         )
 
     def test_install_base_already_installed(self) -> None:
@@ -341,7 +340,6 @@ class TestInstaller:
             project_type="javascript",
             overwrite_instructions=False,
             overwrite_standards=False,
-            overwrite_config=False,
         )
 
     def test_install_project_no_base(self) -> None:
@@ -434,7 +432,6 @@ class TestInstaller:
             project_type="python",
             overwrite_instructions=True,
             overwrite_standards=True,
-            overwrite_config=True,
         )
 
     def test_uninstall_base_confirmed(self) -> None:
