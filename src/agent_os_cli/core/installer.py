@@ -286,7 +286,6 @@ class Installer:
                 project_type=options.project_type or "default",
                 overwrite_instructions=options.overwrite_instructions,
                 overwrite_standards=options.overwrite_standards,
-                overwrite_config=options.overwrite_config,
             )
         except Exception as e:
             raise InstallationError(f"Project installation failed: {e}") from e
@@ -345,7 +344,6 @@ class Installer:
                 project_type=project_type,
                 overwrite_instructions=True,
                 overwrite_standards=True,
-                overwrite_config=True,
             )
 
         except Exception as e:

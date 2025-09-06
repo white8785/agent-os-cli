@@ -82,7 +82,6 @@ class ShellExecutor:
             project_type: Project type for customized setup
             overwrite_instructions: Overwrite existing instruction files
             overwrite_standards: Overwrite existing standards files
-            overwrite_config: Overwrite existing config.yml
 
         Raises:
             InstallationError: If installation script fails or times out
@@ -135,7 +134,6 @@ class ShellExecutor:
         project_type: str = "default",
         overwrite_instructions: bool = False,
         overwrite_standards: bool = False,
-        overwrite_config: bool = False,
     ) -> None:
         """Execute project-level AgentOS installation script.
 
@@ -148,7 +146,6 @@ class ShellExecutor:
             project_type: Project type for customized setup
             overwrite_instructions: Overwrite existing instruction files
             overwrite_standards: Overwrite existing standards files
-            overwrite_config: Overwrite existing config.yml
 
         Raises:
             InstallationError: If installation script fails or times out
@@ -181,8 +178,6 @@ class ShellExecutor:
             cmd_args.append("--overwrite-instructions")
         if overwrite_standards:
             cmd_args.append("--overwrite-standards")
-        if overwrite_config:
-            cmd_args.append("--overwrite-config")
 
         # Add project type (validated above) - project.sh expects --project-type=VALUE format
         if project_type != "default":
