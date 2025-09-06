@@ -91,3 +91,6 @@ dmypy.json
 # uv
 .venv/
 uv.lock
+
+# Agent OS specific
+.agent-os/
