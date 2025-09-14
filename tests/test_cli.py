@@ -6,9 +6,9 @@ from unittest.mock import patch
 
 from typer.testing import CliRunner
 
-from agentos import __version__
-from agentos.cli import app
-from agentos.types import AgentType, InstallationError, InstallStatus
+from agent_os_cli import __version__
+from agent_os_cli.cli import app
+from agent_os_cli.types import AgentType, InstallationError, InstallStatus
 
 
 def strip_ansi_codes(text: str) -> str:
@@ -46,7 +46,7 @@ class TestCLI:
         # Mock the config manager to avoid actual file system access
         mock_status = InstallStatus(base_installed=False, project_installed=False)
 
-        with patch("agentos.cli.config_manager") as mock_config:
+        with patch("agent_os_cli.cli.config_manager") as mock_config:
             mock_config.get_install_status.return_value = mock_status
 
             result = self.runner.invoke(app, ["version"])
@@ -69,7 +69,7 @@ class TestCLI:
 
     def test_install_command_basic(self) -> None:
         """Test basic install command with mocked installer."""
-        with patch("agentos.cli.installer") as mock_installer:
+        with patch("agent_os_cli.cli.installer") as mock_installer:
             # Mock successful installation
             result = self.runner.invoke(app, ["install"], input="n\n")
             assert result.exit_code == 0
@@ -77,7 +77,7 @@ class TestCLI:
 
     def test_install_command_with_options(self) -> None:
         """Test install command with various options."""
-        with patch("agentos.cli.installer") as mock_installer:
+        with patch("agent_os_cli.cli.installer") as mock_installer:
             result = self.runner.invoke(
                 app, ["install", "--project", "--claude-code", "--project-type", "python", "--overwrite-instructions"]
             )
@@ -100,14 +100,14 @@ class TestCLI:
 
     def test_update_command(self) -> None:
         """Test update command."""
-        with patch("agentos.cli.installer") as mock_installer:
+        with patch("agent_os_cli.cli.installer") as mock_installer:
             result = self.runner.invoke(app, ["update"])
             assert result.exit_code == 0
             mock_installer.update.assert_called_with(project_only=False)
 
     def test_update_command_project_only(self) -> None:
         """Test update command with project flag."""
-        with patch("agentos.cli.installer") as mock_installer:
+        with patch("agent_os_cli.cli.installer") as mock_installer:
             result = self.runner.invoke(app, ["update", "--project"])
             assert result.exit_code == 0
             mock_installer.update.assert_called_with(project_only=True)
@@ -122,14 +122,14 @@ class TestCLI:
 
     def test_uninstall_command(self) -> None:
         """Test uninstall command."""
-        with patch("agentos.cli.installer") as mock_installer:
+        with patch("agent_os_cli.cli.installer") as mock_installer:
             result = self.runner.invoke(app, ["uninstall"])
             assert result.exit_code == 0
             mock_installer.uninstall.assert_called_with(project_only=False)
 
     def test_uninstall_command_project_only(self) -> None:
         """Test uninstall command with project flag."""
-        with patch("agentos.cli.installer") as mock_installer:
+        with patch("agent_os_cli.cli.installer") as mock_installer:
             result = self.runner.invoke(app, ["uninstall", "--project"])
             assert result.exit_code == 0
             mock_installer.uninstall.assert_called_with(project_only=True)
@@ -157,7 +157,7 @@ class TestCLIIntegration:
 
     def test_cli_version_consistency(self) -> None:
         """Test that CLI version matches package version."""
-        with patch("agentos.cli.config_manager") as mock_config:
+        with patch("agent_os_cli.cli.config_manager") as mock_config:
             mock_config.get_install_status.return_value = InstallStatus(base_installed=False, project_installed=False)
 
             result = self.runner.invoke(app, ["version"])
@@ -185,7 +185,7 @@ class TestCLIIntegration:
 
     def test_install_project_prompt_yes(self) -> None:
         """Test install base with project prompt answered yes."""
-        with patch("agentos.cli.installer") as mock_installer:
+        with patch("agent_os_cli.cli.installer") as mock_installer:
             result = self.runner.invoke(app, ["install"], input="y\n")
             assert result.exit_code == 0
             # Should call install twice: once for base, once for project
@@ -193,7 +193,7 @@ class TestCLIIntegration:
 
     def test_install_project_prompt_no(self) -> None:
         """Test install base with project prompt answered no."""
-        with patch("agentos.cli.installer") as mock_installer:
+        with patch("agent_os_cli.cli.installer") as mock_installer:
             result = self.runner.invoke(app, ["install"], input="n\n")
             assert result.exit_code == 0
             # Should call install once for base only
@@ -201,7 +201,7 @@ class TestCLIIntegration:
 
     def test_install_error_handling(self) -> None:
         """Test install command error handling."""
-        with patch("agentos.cli.installer") as mock_installer:
+        with patch("agent_os_cli.cli.installer") as mock_installer:
             mock_installer.install.side_effect = InstallationError("Installation failed")
 
             result = self.runner.invoke(app, ["install", "--project"])
@@ -210,7 +210,7 @@ class TestCLIIntegration:
 
     def test_update_error_handling(self) -> None:
         """Test update command error handling."""
-        with patch("agentos.cli.installer") as mock_installer:
+        with patch("agent_os_cli.cli.installer") as mock_installer:
             mock_installer.update.side_effect = InstallationError("Update failed")
 
             result = self.runner.invoke(app, ["update"])
@@ -219,7 +219,7 @@ class TestCLIIntegration:
 
     def test_uninstall_error_handling(self) -> None:
         """Test uninstall command error handling."""
-        with patch("agentos.cli.installer") as mock_installer:
+        with patch("agent_os_cli.cli.installer") as mock_installer:
             mock_installer.uninstall.side_effect = InstallationError("Uninstall failed")
 
             result = self.runner.invoke(app, ["uninstall"])
@@ -236,7 +236,7 @@ class TestCLIIntegration:
             project_type="python",
         )
 
-        with patch("agentos.cli.config_manager") as mock_config:
+        with patch("agent_os_cli.cli.config_manager") as mock_config:
             mock_config.get_install_status.return_value = mock_status
 
             result = self.runner.invoke(app, ["version"])
@@ -248,7 +248,7 @@ class TestCLIIntegration:
 
     def test_version_error_handling(self) -> None:
         """Test version command error handling."""
-        with patch("agentos.cli.config_manager") as mock_config:
+        with patch("agent_os_cli.cli.config_manager") as mock_config:
             mock_config.get_install_status.side_effect = Exception("Config error")
 
             result = self.runner.invoke(app, ["version"])

@@ -11,7 +11,7 @@ The ConfigManager class handles:
 - Configuration caching for performance
 
 Example:
-    >>> from agentos.core.config import ConfigManager
+    >>> from agent_os_cli.core.config import ConfigManager
     >>> config_manager = ConfigManager()
     >>> status = config_manager.get_install_status()
     >>> print(f"Base installed: {status.base_installed}")
@@ -94,7 +94,7 @@ class ConfigManager:
                 config_data = yaml.safe_load(f)
 
             if not isinstance(config_data, dict):
-                raise ConfigurationError(f"Invalid configuration format in {config_path}. " "Expected YAML dictionary.")
+                raise ConfigurationError(f"Invalid configuration format in {config_path}. Expected YAML dictionary.")
 
             # Validate and parse using Pydantic
             self._base_config_cache = AgentOSConfig(**config_data)

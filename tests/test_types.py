@@ -6,7 +6,7 @@ from typing import Any
 import pytest
 from pydantic import ValidationError
 
-from agentos.types import (
+from agent_os_cli.types import (
     AgentConfig,
     AgentOSConfig,
     AgentOSError,
@@ -151,7 +151,6 @@ class TestInstallOptions:
             location=InstallLocation.PROJECT,
             overwrite_instructions=True,
             overwrite_standards=True,
-            overwrite_config=True,
             claude_code=True,
             cursor=True,
             project_type="python",
@@ -162,7 +161,6 @@ class TestInstallOptions:
             [
                 options.overwrite_instructions,
                 options.overwrite_standards,
-                options.overwrite_config,
                 options.claude_code,
                 options.cursor,
                 options.no_base,

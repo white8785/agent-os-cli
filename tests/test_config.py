@@ -9,8 +9,8 @@ from unittest.mock import Mock, patch
 import pytest
 import yaml
 
-from agentos.core.config import ConfigManager
-from agentos.types import AgentType, ConfigurationError
+from agent_os_cli.core.config import ConfigManager
+from agent_os_cli.types import AgentType, ConfigurationError
 
 
 class TestConfigManager:

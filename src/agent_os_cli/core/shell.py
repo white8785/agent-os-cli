@@ -12,14 +12,16 @@ The ShellExecutor class handles:
 - Security-hardened command execution
 
 Example:
-    >>> from agentos.core.shell import ShellExecutor
+    >>> from agent_os_cli.core.shell import ShellExecutor
     >>> executor = ShellExecutor()
     >>> executor.run_base_install(claude_code=True)
 """
 
 from __future__ import annotations
 
+import site
 import subprocess
+import sys
 from pathlib import Path
 
 from rich.console import Console
@@ -80,7 +82,6 @@ class ShellExecutor:
             project_type: Project type for customized setup
             overwrite_instructions: Overwrite existing instruction files
             overwrite_standards: Overwrite existing standards files
-            overwrite_config: Overwrite existing config.yml
 
         Raises:
             InstallationError: If installation script fails or times out
@@ -133,7 +134,6 @@ class ShellExecutor:
         project_type: str = "default",
         overwrite_instructions: bool = False,
         overwrite_standards: bool = False,
-        overwrite_config: bool = False,
     ) -> None:
         """Execute project-level AgentOS installation script.
 
@@ -146,7 +146,6 @@ class ShellExecutor:
             project_type: Project type for customized setup
             overwrite_instructions: Overwrite existing instruction files
             overwrite_standards: Overwrite existing standards files
-            overwrite_config: Overwrite existing config.yml
 
         Raises:
             InstallationError: If installation script fails or times out
@@ -179,8 +178,6 @@ class ShellExecutor:
             cmd_args.append("--overwrite-instructions")
         if overwrite_standards:
             cmd_args.append("--overwrite-standards")
-        if overwrite_config:
-            cmd_args.append("--overwrite-config")
 
         # Add project type (validated above) - project.sh expects --project-type=VALUE format
         if project_type != "default":
@@ -212,19 +209,24 @@ class ShellExecutor:
             >>> if script_path:
             ...     print(f"Found script at: {script_path}")
         """
-        search_locations = [
-            # Bundled scripts in package
-            Path(__file__).parent.parent.parent.parent / "scripts" / script_name,
+        search_locations: list[Path] = [
+            # Development: scripts in source repository
             Path(__file__).parent.parent.parent.parent / "setup" / script_name,
+            # Installed: data files in site-packages share location
+            Path(sys.prefix) / "share" / "agent-os-cli" / "setup" / script_name,
             # User installation paths from settings
             *[path / script_name for path in PATHS.scripts_search_paths],
             # Current working directory (for development)
-            Path.cwd() / "scripts" / script_name,
             Path.cwd() / "setup" / script_name,
             # System locations
             Path("/usr/local/bin") / script_name,
             Path("/usr/bin") / script_name,
         ]
+
+        # Also check site-packages directly if available
+        site_packages = site.getsitepackages() if hasattr(site, "getsitepackages") else []
+        if site_packages:
+            search_locations.insert(2, Path(site_packages[0]) / "share" / "agent-os-cli" / "setup" / script_name)
 
         for location in search_locations:
             if location.exists() and location.is_file():

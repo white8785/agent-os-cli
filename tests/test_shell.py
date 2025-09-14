@@ -8,8 +8,8 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from agentos.core.shell import ShellExecutor
-from agentos.types import InstallationError
+from agent_os_cli.core.shell import ShellExecutor
+from agent_os_cli.types import InstallationError
 
 
 class TestShellExecutor:
@@ -120,7 +120,6 @@ class TestShellExecutor:
                 patch.object(Path, "is_file", return_value=True),
                 patch.object(Path, "stat") as mock_stat,
             ):
-
                 # Mock stat to return non-executable permissions
                 mock_stat_result = Mock()
                 mock_stat_result.st_mode = 0o644  # Not executable
@@ -153,7 +152,7 @@ class TestShellExecutor:
         mock_result.stderr = ""
         mock_run.return_value = mock_result
 
-        with patch("agentos.core.shell.Progress") as mock_progress_cls:
+        with patch("agent_os_cli.core.shell.Progress") as mock_progress_cls:
             mock_progress = Mock()
             mock_task = Mock()
             mock_progress.add_task.return_value = mock_task
@@ -185,10 +184,9 @@ class TestShellExecutor:
         mock_run.return_value = mock_result
 
         with (
-            patch("agentos.core.shell.Progress") as mock_progress_cls,
+            patch("agent_os_cli.core.shell.Progress") as mock_progress_cls,
             pytest.raises(InstallationError, match="Script failed with exit code 1"),
         ):
-
             mock_progress = Mock()
             mock_progress_cls.return_value.__enter__.return_value = mock_progress
 
@@ -201,10 +199,9 @@ class TestShellExecutor:
         mock_run.side_effect = subprocess.TimeoutExpired("cmd", 600)
 
         with (
-            patch("agentos.core.shell.Progress") as mock_progress_cls,
+            patch("agent_os_cli.core.shell.Progress") as mock_progress_cls,
             pytest.raises(InstallationError, match="Script execution timed out"),
         ):
-
             mock_progress = Mock()
             mock_progress_cls.return_value.__enter__.return_value = mock_progress
 
@@ -217,10 +214,9 @@ class TestShellExecutor:
         mock_run.side_effect = subprocess.SubprocessError("Process failed")
 
         with (
-            patch("agentos.core.shell.Progress") as mock_progress_cls,
+            patch("agent_os_cli.core.shell.Progress") as mock_progress_cls,
             pytest.raises(InstallationError, match="Failed to execute installation script"),
         ):
-
             mock_progress = Mock()
             mock_progress_cls.return_value.__enter__.return_value = mock_progress
 
@@ -233,10 +229,9 @@ class TestShellExecutor:
         mock_run.side_effect = ValueError("Unexpected error")
 
         with (
-            patch("agentos.core.shell.Progress") as mock_progress_cls,
+            patch("agent_os_cli.core.shell.Progress") as mock_progress_cls,
             pytest.raises(InstallationError, match="Unexpected error during script execution"),
         ):
-
             mock_progress = Mock()
             mock_progress_cls.return_value.__enter__.return_value = mock_progress
 
@@ -249,7 +244,6 @@ class TestShellExecutor:
             patch.object(self.executor, "_execute_script") as mock_execute,
             patch.object(self.executor, "_validate_project_type") as mock_validate,
         ):
-
             mock_find.return_value = Path("/path/to/base.sh")
 
             self.executor.run_base_install(
@@ -279,7 +273,6 @@ class TestShellExecutor:
             patch.object(self.executor, "_find_script", return_value=None),
             patch.object(self.executor, "_validate_project_type"),
         ):
-
             with pytest.raises(InstallationError, match="Base installation script 'base.sh' not found"):
                 self.executor.run_base_install()
 
@@ -290,7 +283,6 @@ class TestShellExecutor:
             patch.object(self.executor, "_execute_script") as mock_execute,
             patch.object(self.executor, "_validate_project_type") as mock_validate,
         ):
-
             mock_find.return_value = Path("/path/to/base.sh")
 
             self.executor.run_base_install(project_type="default")
@@ -308,7 +300,6 @@ class TestShellExecutor:
             patch.object(self.executor, "_execute_script") as mock_execute,
             patch.object(self.executor, "_validate_project_type") as mock_validate,
         ):
-
             mock_find.return_value = Path("/path/to/project.sh")
 
             self.executor.run_project_install(
@@ -337,7 +328,6 @@ class TestShellExecutor:
             patch.object(self.executor, "_find_script", return_value=None),
             patch.object(self.executor, "_validate_project_type"),
         ):
-
             with pytest.raises(InstallationError, match="Project installation script 'project.sh' not found"):
                 self.executor.run_project_install()
 
@@ -367,8 +357,7 @@ class TestShellExecutor:
 
     def test_environment_security(self) -> None:
         """Test that script execution uses secure environment."""
-        with patch("subprocess.run") as mock_run, patch("agentos.core.shell.Progress") as mock_progress_cls:
-
+        with patch("subprocess.run") as mock_run, patch("agent_os_cli.core.shell.Progress") as mock_progress_cls:
             mock_result = Mock()
             mock_result.returncode = 0
             mock_result.stdout = ""

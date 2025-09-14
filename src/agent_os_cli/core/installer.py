@@ -12,8 +12,8 @@ The Installer class handles:
 - Comprehensive error handling and recovery
 
 Example:
-    >>> from agentos.core.installer import Installer
-    >>> from agentos.types import InstallOptions, InstallLocation
+    >>> from agent_os_cli.core.installer import Installer
+    >>> from agent_os_cli.types import InstallOptions, InstallLocation
     >>> installer = Installer()
     >>> options = InstallOptions(location=InstallLocation.BASE, claude_code=True)
     >>> installer.install(options)
@@ -82,7 +82,7 @@ class Installer:
             InstallationError: If installation fails at any stage
 
         Example:
-            >>> from agentos.types import InstallOptions, InstallLocation
+            >>> from agent_os_cli.types import InstallOptions, InstallLocation
             >>> installer = Installer()
             >>> options = InstallOptions(
             ...     location=InstallLocation.PROJECT,
@@ -130,7 +130,7 @@ class Installer:
         else:
             if not status.base_installed and not status.project_installed:
                 raise InstallationError(
-                    "No AgentOS installation found to update. " "Run 'agentos install' to install AgentOS first."
+                    "No AgentOS installation found to update. Run 'agentos install' to install AgentOS first."
                 )
 
             if status.base_installed:
@@ -286,7 +286,6 @@ class Installer:
                 project_type=options.project_type or "default",
                 overwrite_instructions=options.overwrite_instructions,
                 overwrite_standards=options.overwrite_standards,
-                overwrite_config=options.overwrite_config,
             )
         except Exception as e:
             raise InstallationError(f"Project installation failed: {e}") from e
@@ -345,7 +344,6 @@ class Installer:
                 project_type=project_type,
                 overwrite_instructions=True,
                 overwrite_standards=True,
-                overwrite_config=True,
             )
 
         except Exception as e:

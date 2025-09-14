@@ -2,7 +2,7 @@
 
 .PHONY: help install install-dev test lint format format-check typecheck clean build check pre-ci security deps dev init
 
-help: ## Display this help message
+help: ## Display ithis help message
 	@echo "AgentOS CLI Development Commands"
 	@echo "================================"
 	@echo ""
@@ -16,7 +16,7 @@ install-dev: ## Install all dependencies including dev tools
 	uv pip install --force-reinstall -e .
 
 test: ## Run test suite with coverage
-	uv run --extra test pytest tests/ -v --cov=agentos --cov-report=term-missing --cov-report=html
+	uv run --extra test pytest tests/ -v --cov=agent_os_cli --cov-report=term-missing --cov-report=html
 
 lint: ## Run all linting checks
 	@echo "Running ruff..."
@@ -24,12 +24,12 @@ lint: ## Run all linting checks
 	@echo "Running mypy..."
 	uv run --extra lint mypy src/
 
-format: ## Format code with black and ruff
-	uv run --extra lint black src/ tests/
+format: ## Format code with ruff
 	uv run --extra lint ruff check --fix src/ tests/
+	uv run --extra lint ruff format src/ tests/
 
 format-check: ## Check code formatting without modifying
-	uv run --extra lint black --check src/ tests/
+	uv run --extra lint ruff format --check src/ tests/
 	uv run --extra lint ruff check src/ tests/
 
 typecheck: ## Run mypy type checking

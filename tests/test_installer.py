@@ -6,8 +6,8 @@ from unittest.mock import Mock, patch
 import pytest
 import requests
 
-from agentos.core.installer import Installer
-from agentos.types import InstallationError, InstallLocation, InstallOptions
+from agent_os_cli.core.installer import Installer
+from agent_os_cli.types import InstallationError, InstallLocation, InstallOptions
 
 
 class TestInstaller:
@@ -110,7 +110,6 @@ class TestInstaller:
             patch.object(self.installer, "_update_base") as mock_update_base,
             patch.object(self.installer, "_update_project") as mock_update_project,
         ):
-
             self.installer.update(project_only=False)
 
             mock_update_base.assert_called_once_with(status)
@@ -161,7 +160,6 @@ class TestInstaller:
             patch.object(self.installer, "_uninstall_base") as mock_uninstall_base,
             patch.object(self.installer, "_uninstall_project") as mock_uninstall_project,
         ):
-
             self.installer.uninstall(project_only=False)
 
             mock_uninstall_project.assert_called_once_with(status)
@@ -254,7 +252,6 @@ class TestInstaller:
             location=InstallLocation.BASE,
             claude_code=True,
             project_type="python",
-            overwrite_config=True,
         )
 
         status = Mock()
@@ -270,7 +267,7 @@ class TestInstaller:
             project_type="python",
             overwrite_instructions=False,
             overwrite_standards=False,
-            overwrite_config=True,
+            overwrite_config=False,
         )
 
     def test_install_base_already_installed(self) -> None:
@@ -343,7 +340,6 @@ class TestInstaller:
             project_type="javascript",
             overwrite_instructions=False,
             overwrite_standards=False,
-            overwrite_config=False,
         )
 
     def test_install_project_no_base(self) -> None:
@@ -436,7 +432,6 @@ class TestInstaller:
             project_type="python",
             overwrite_instructions=True,
             overwrite_standards=True,
-            overwrite_config=True,
         )
 
     def test_uninstall_base_confirmed(self) -> None:
