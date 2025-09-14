@@ -2,7 +2,7 @@
 
 .PHONY: help install install-dev test lint format format-check typecheck clean build check pre-ci security deps dev init
 
-help: ## Display this help message
+help: ## Display ithis help message
 	@echo "AgentOS CLI Development Commands"
 	@echo "================================"
 	@echo ""
